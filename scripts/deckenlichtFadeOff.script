@@ -1,0 +1,19 @@
+val String command = "fade_4000_" + MaxHelligkeit.state +  "_0"
+var int delay = 50;
+
+logInfo("deckenlichtFadeOff", "fade aus")
+
+sendCommand(decke_LEDSued, command)
+createTimer(now.plusMillis(delay)) [|
+	sendCommand(decke_LEDWest, command)	
+]
+createTimer(now.plusMillis(delay*2)) [|
+	sendCommand(decke_LEDNord, command)	
+]
+createTimer(now.plusMillis(delay*3)) [|
+	sendCommand(decke_LEDOst, command)
+]
+
+
+
+

@@ -1,0 +1,40 @@
+import org.openhab.core.library.types.*
+
+var Number oldState = 50
+var Number currState = 50
+var boolean hoch = false
+
+rule "Rollade Steuerung"
+when
+ 	Item RolladeStatus changed
+then
+	oldState = previousState as DecimalType
+	currState = RolladeStatus.state as DecimalType
+	var Number diff = 0
+	if(oldState > currState){ // Runter
+		diff = (oldState - currState) * 0.27
+		hoch = false
+	} else { // Hoch
+		diff = (currState - oldState) * 0.27
+		hoch = true
+	}	
+	
+	if(currState == 100 || currState == 0) { //Wenn Ziel ganz oben oder unten, immer 30 Sekunden um Ziel definiv zu erreichen (Kalibrierung)
+		logInfo("Rollade", "Ganz hoch oder runter, Kalibrierfahrt")
+		diff = 30
+	}
+	
+	if(hoch){
+		sendCommand(RolladeRichtung, ON)		
+		diff = diff * 1.2 //Gebe etwas mehr Zeit um hoch zu gehen
+	}
+	else {
+		sendCommand(RolladeRichtung, OFF)		
+	} 
+	sendCommand(RolladeStrom, ON)
+	
+	createTimer(now.plusSeconds(diff.intValue))[|
+		sendCommand(RolladeStrom, OFF)
+		sendCommand(RolladeRichtung, OFF)
+	]
+end

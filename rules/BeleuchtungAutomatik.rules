@@ -1,0 +1,54 @@
+import org.openhab.core.library.types.*
+
+var boolean istBeleuchtungAn = true 
+var Number tempMaxHelligkeit = 100
+
+rule "BeleuchtungHandlerON"
+when	 
+	Item Beleuchtung received command ON or
+	Item MaxHelligkeit received update
+then
+//	logInfo("BeleuchtungHandler", "Beleuchtung Variable auf ON gesetzt")
+	var boolean maxHelligkeitGeaendert = (tempMaxHelligkeit != MaxHelligkeit.state)
+	var int maxHelligkeit = (MaxHelligkeit.state as DecimalType).intValue
+	var String cmd
+	
+	if(istBeleuchtungAn) {
+		if(maxHelligkeitGeaendert) {
+			cmd = "fade_300_" + tempMaxHelligkeit + "_" + maxHelligkeit
+		}
+	} else {
+		cmd = "fade_300_0_" + maxHelligkeit
+		istBeleuchtungAn = true
+	}
+	
+	sendCommand(NT, ON)
+	sendCommand(decke_LEDSued, cmd)
+	sendCommand(decke_LEDOst, cmd)	
+	sendCommand(decke_LEDWest, cmd)	
+	sendCommand(decke_LEDNord, cmd)	
+	
+	tempMaxHelligkeit = maxHelligkeit //speichere HelligkeitsWert
+end
+
+rule "BeleuchtungHandlerOFF"
+when	 
+	Item Beleuchtung received command OFF
+then
+	var int maxHelligkeit = (MaxHelligkeit.state as DecimalType).intValue
+	var String cmd
+	logInfo("BeleuchtungHandler", "Beleuchtung Variable auf OFF gesetzt")
+	if(istBeleuchtungAn) {
+		cmd = "fade_2000_" + maxHelligkeit + "_0" 
+		istBeleuchtungAn = false
+	}    
+
+	sendCommand(decke_LEDSued, cmd)
+	sendCommand(decke_LEDOst, cmd)	
+	sendCommand(decke_LEDWest, cmd)	
+	sendCommand(decke_LEDNord, cmd)	
+end
+
+
+
+

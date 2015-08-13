@@ -1,0 +1,59 @@
+/* GROUPS */
+Group All
+Group Rollade 
+Group Deckenlicht
+Group SchubladenschrankLinks
+Group SchubladenschrankRechts
+
+Group s_Helligkeit
+Group s_Bewegungsmelder
+Group s_SchubladenschrankLinks
+Group s_SchubladenschrankRechts
+Group s_Fenster
+Group s_Temperatur
+
+
+/* DECKE LICHT */
+Switch NT (Deckenlicht) { gpioremotecontrol="123.123.123.31:1234;4;out"} 
+String decke_LEDNord (Deckenlicht) { gpioremotecontrol="123.123.123.31:1234;105;out"}
+String decke_LEDOst (Deckenlicht) { gpioremotecontrol="123.123.123.31:1234;106;out"} 
+String decke_LEDSued (Deckenlicht) { gpioremotecontrol="123.123.123.31:1234;104;out"} 
+String decke_LEDWest (Deckenlicht) { gpioremotecontrol="123.123.123.31:1234;107;out"} 
+
+String decke_LEDRot (Deckenlicht) { gpioremotecontrol="123.123.123.31:1234;101;out"}
+String decke_LEDGruen (Deckenlicht) { gpioremotecontrol="123.123.123.31:1234;102;out"}
+String decke_LEDBlau (Deckenlicht) { gpioremotecontrol="123.123.123.31:1234;103;out"}
+
+Switch decke_ECKE1 (Deckenlicht) { gpioremotecontrol="123.123.123.31:1234;0;out"}
+Switch decke_ECKE2 (Deckenlicht) { gpioremotecontrol="123.123.123.31:1234;2;out"}
+Switch decke_ECKE3 (Deckenlicht) { gpioremotecontrol="123.123.123.31:1234;3;out"}
+Switch decke_ECKE4 (Deckenlicht) { gpioremotecontrol="123.123.123.31:1234;12;out"}
+
+
+/* PWM Board 1 direkt am Pi-main */
+Dimmer ZwischenWandLed { pca9685control="64;0"}
+Dimmer UnterTischLedBlau { pca9685control="64;1"}
+Dimmer UnterTischLedGruen { pca9685control="64;2"}
+Dimmer UnterTischLedRot { pca9685control="64;3"} 
+Color  UnterTischLed
+
+Dimmer SchubladeRechts1 (SchubladenschrankRechts) { pca9685control="64;4"}
+Dimmer SchubladeRechts2 (SchubladenschrankRechts) { pca9685control="64;5"}
+Dimmer SchubladeRechts3 (SchubladenschrankRechts) { pca9685control="64;6"}
+Dimmer SchubladeRechts4 (SchubladenschrankRechts) { pca9685control="64;7"}
+
+Dimmer SchubladeLinks1 (SchubladenschrankLinks) { pca9685control="64;8"}
+Dimmer SchubladeLinks2 (SchubladenschrankLinks) { pca9685control="64;9"}
+Dimmer SchubladeLinks3 (SchubladenschrankLinks) { pca9685control="64;10"}
+Dimmer SchubladeLinks4 (SchubladenschrankLinks) { pca9685control="64;11"} 
+Dimmer SchubladeLinks5 (SchubladenschrankLinks) { pca9685control="64;12"}
+
+
+/* Rollade */
+Switch RolladeStrom (Rollade) { pcf8574control="32;6;out"}
+Switch RolladeRichtung (Rollade) { pcf8574control="32;7;out"}
+Number RolladeStatus (Rollade)
+
+
+/* Infos */
+String pca9685controlBindingStatus

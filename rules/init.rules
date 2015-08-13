@@ -1,0 +1,20 @@
+import org.openhab.core.library.types.*
+
+rule "Init on startup"
+when
+//	System started or
+	Item InitVars changed to ON	
+then
+	BeleuchtungAutomatik.setState(ON)
+	BeleuchtungHelligkeitAutomatik.setState(ON)	
+	MaxHelligkeit.setState(new PercentType(100))
+	BeleuchtungAusTimerInMs.setState(new DecimalType(120000))
+	HelligkeitSchwellwertVitrine.setState(new DecimalType(90))
+	HelligkeitSchwellwertZwischenwand.setState(new DecimalType(100))
+	HelligkeitToleranz.setState(new DecimalType(10))
+	TagMaxHelligkeit.setState(new DecimalType(100)) 
+	NachtMaxHelligkeit.setState(new DecimalType(40))
+	NachtBettMaxHelligkeit.setState(new DecimalType(20))
+	NachtStartStunde.setState(new DecimalType(23))
+	NachtEndStunde.setState(new DecimalType(10))
+end

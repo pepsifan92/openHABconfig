@@ -1,0 +1,30 @@
+/* ============== SENSOREN ================ */
+Contact s_BewegungsmelderVitrine (s_Bewegungsmelder) { pcf8574control="33;0;in"}
+Contact s_BewegungsmelderZwischenwandLinks (s_Bewegungsmelder) { pcf8574control="33;1;in"}
+Contact s_BewegungsmelderZwischenwandRechts (s_Bewegungsmelder) { pcf8574control="33;2;in"}
+
+Contact s_SchubladeLinks1 (s_SchubladenschrankLinks) { pcf8574control="34;0;in"} 
+Contact s_SchubladeLinks2 (s_SchubladenschrankLinks) { pcf8574control="34;1;in"} 
+Contact s_SchubladeLinks3 (s_SchubladenschrankLinks) { pcf8574control="34;2;in"}  
+Contact s_SchubladeLinks4 (s_SchubladenschrankLinks) { pcf8574control="34;3;in"} 
+Contact s_SchubladeLinks5 (s_SchubladenschrankLinks) { pcf8574control="34;7;in"} 
+
+Contact s_SchubladeRechts1 (s_SchubladenschrankRechts) { pcf8574control="35;0;in"} 
+Contact s_SchubladeRechts2 (s_SchubladenschrankRechts) { pcf8574control="35;1;in"} 
+Contact s_SchubladeRechts3 (s_SchubladenschrankRechts) { pcf8574control="35;2;in"}
+Contact s_SchubladeRechts4 (s_SchubladenschrankRechts) { pcf8574control="35;3;in"}
+
+/* Tuer und Fenster */
+Contact s_Tuer { pcf8574control="34;6;in"}
+Contact s_FensterGrossAuf (s_Fenster) { pcf8574control="35;6;in"} 
+Contact s_FensterGrossKipp (s_Fenster) { pcf8574control="35;5;in"}
+Contact s_FensterKleinAuf (s_Fenster) { pcf8574control="35;4;in"}
+Contact s_FensterKleinKipp(s_Fenster) { pcf8574control="35;7;in"}
+
+Number s_Helligkeit_Vitrine (s_Helligkeit) { pcf8591control="72;0"} 
+Number s_Helligkeit_Zwischenwand (s_Helligkeit) { pcf8591control="72;1"}
+
+Number s_decke_temperature_aussen (s_Temperatur) { gpioremotecontrol="123.123.123.31:1234;28-00044a7273ff;temperature"} 
+Number s_decke_temperature_lampe (s_Temperatur) { gpioremotecontrol="123.123.123.31:1234;28-00044a72b1ff;temperature"}
+Number s_temperatur_vitrine (s_Temperatur) {ds18b20="28-00044a70e9ff"} 
+Number s_temperatur_heizung (s_Temperatur) {ds18b20="28-00044a7105ff"} 

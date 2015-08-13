@@ -1,0 +1,34 @@
+/* Init */
+Switch InitVars
+
+
+/* Beleuchtung */
+Switch BeleuchtungAutomatik
+Switch BeleuchtungHelligkeitAutomatik
+Number MaxHelligkeit 
+Number BeleuchtungAusTimerInMs
+Number HelligkeitSchwellwertVitrine
+Number HelligkeitSchwellwertZwischenwand
+Number HelligkeitToleranz 
+
+Number TagMaxHelligkeit
+Number NachtMaxHelligkeit
+Number NachtBettMaxHelligkeit
+Number NachtStartStunde <settings>
+Number NachtEndStunde <settings>
+
+Switch Anwesend
+Switch DirekteSonne
+Switch IstHell
+Switch ImBett
+
+
+
+
+Switch Beleuchtung
+
+Switch IstHellInLetzterMinuteGeaendert
+String LastUpdateOfIstHell <settings>
+
+Switch PlaySound
+Number MasterVolume

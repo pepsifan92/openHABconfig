@@ -1,0 +1,66 @@
+import org.openhab.core.library.types.*
+import org.joda.time.*
+
+/* OnTimerInMs gibt die Zeit an, die seit der letzten Bewegung gewartet werden soll, das Licht auszuschalten */ 
+var long lastmotion
+ 
+
+rule "Tuer geoeffnet oder Bewegungsmelder etwas erkannt"
+when	 
+	Item s_Tuer received update OPEN or
+	Item s_BewegungsmelderVitrine received update CLOSED or
+	Item s_BewegungsmelderZwischenwandRechts received update CLOSED or
+	Item s_BewegungsmelderZwischenwandLinks received update CLOSED 
+then	
+	lastmotion = now.millis
+//	logInfo("Anwesenheit", "Bewegung Erkannt")
+//	playSound("5e_oringz-pack-nine-11.mp3")
+	if(s_BewegungsmelderVitrine.state == OPEN &&
+	   s_BewegungsmelderZwischenwandRechts.state == OPEN &&
+	   s_BewegungsmelderZwischenwandLinks.state == CLOSED
+	){ //Wenn nur der Bewegungsmelder, der das Bett sieht etwas meldet...
+//		logInfo("Anwesenheit", "Bewegung am Bett erkannt")		
+		sendCommand(ImBett, ON)
+	} else {
+//		logInfo("Anwesenheit", "Bewegung erkannt")		
+		sendCommand(ImBett, OFF)
+	}
+	sendCommand(Anwesend, ON)
+end
+
+
+rule "Tuer geschlossen und dann keine Bewegung mehr -> rausgangen?"
+when	 
+	Item s_Tuer received update CLOSED
+then
+	lastmotion = now.millis
+	/* Check x seconds after leaving if there was detected motion */
+	createTimer(now.plusSeconds(5)) [|  
+		if(!(s_BewegungsmelderVitrine.state == CLOSED ||
+			s_BewegungsmelderZwischenwandRechts.state == CLOSED ||
+			s_BewegungsmelderZwischenwandLinks.state == CLOSED 
+		)){
+			sendCommand(Anwesend, OFF)		
+		}	
+	]	
+end
+
+
+rule "Check alle 30 Sekunden, ob noch Anwesenheit zu vermuten ist"
+when	 
+	Time cron "*/30 * * * * ?" 
+then
+	var long OnTimerInMs = (BeleuchtungAusTimerInMs.state as DecimalType).longValue
+	
+	if(!(s_BewegungsmelderVitrine.state == CLOSED ||
+		s_BewegungsmelderZwischenwandRechts.state == CLOSED ||
+		s_BewegungsmelderZwischenwandLinks.state == CLOSED 
+	))	
+	{
+		var long diff = now.millis - lastmotion	
+		if(diff > OnTimerInMs){
+//			logInfo("Anwesenheit", "Keine Anwesenheit mehr, seit " + diff + "ms")
+			sendCommand(Anwesend, OFF)
+	    } 
+    }
+end

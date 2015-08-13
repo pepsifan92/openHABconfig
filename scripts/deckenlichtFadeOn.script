@@ -1,0 +1,24 @@
+val String command = "fade_300_0_" + MaxHelligkeit.state
+var int delay = 50;
+
+//sendCommand(decke_LEDNord, OFF)
+//sendCommand(decke_LEDOst, OFF)
+//sendCommand(decke_LEDSued, OFF)
+//sendCommand(decke_LEDWest, OFF)
+logInfo("deckenlichtFadeOn", "Netzteil anschalten und fade an zu Wert: "+ MaxHelligkeit.state)
+sendCommand(NT, ON)
+
+sendCommand(decke_LEDSued, command)
+createTimer(now.plusMillis(delay)) [|
+	sendCommand(decke_LEDOst, command)	
+]
+createTimer(now.plusMillis(delay*2)) [|
+	sendCommand(decke_LEDWest, command)		
+]
+createTimer(now.plusMillis(delay*3)) [|
+	sendCommand(decke_LEDNord, command)	
+]
+
+
+
+

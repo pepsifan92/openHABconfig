@@ -1,0 +1,125 @@
+//import org.openhab.core.library.types.*
+
+var Number pwmHell = 100 
+val Number pwmMittel = 60
+
+/* Schubladen Links */
+rule "SchubladeLinks1"	
+    when
+        Item s_SchubladeLinks1 received update        
+    then
+    	var Number value
+    	if(s_SchubladeLinks1.state == OPEN) {
+    		value = pwmHell     
+        } else {
+        	value = 0     
+        }
+        sendCommand(SchubladeLinks1, value);        
+end
+	
+rule "SchubladeLinks2"	
+    when
+        Item s_SchubladeLinks2 received update        
+    then
+    	var Number value
+    	if(s_SchubladeLinks2.state == OPEN) {
+    		value = pwmHell      
+        } else {
+        	value = 0     
+        }
+        sendCommand(SchubladeLinks2, value);
+end
+
+rule "SchubladeLinks3"	
+    when
+        Item s_SchubladeLinks3 received update        
+    then
+    	var Number value
+    	if(s_SchubladeLinks3.state == OPEN) {
+    		value = pwmHell      
+        } else {
+        	value = 0     
+        }
+        sendCommand(SchubladeLinks3, value);
+end
+
+rule "SchubladeLinks4"	
+    when
+        Item s_SchubladeLinks4 received update        
+    then
+    	var Number value
+    	if(s_SchubladeLinks4.state == OPEN) {
+    		value = pwmHell      
+        } else {
+        	value = 0     
+        }
+        sendCommand(SchubladeLinks4, value);
+end
+
+rule "SchubladeLinks5"	
+    when
+        Item s_SchubladeLinks5 received update        
+    then
+    	var Number value
+    	if(s_SchubladeLinks5.state == OPEN) {
+    		value = pwmHell      
+        } else {
+        	value = 0     
+        }
+        sendCommand(SchubladeLinks5, value);
+end
+
+
+
+/* Schubladen rechts */
+rule "SchubladeRechts1"	
+    when
+        Item s_SchubladeRechts1 received update        
+    then
+    	var Number value
+    	if(s_SchubladeRechts1.state == OPEN) {
+    		value = pwmHell      
+        } else {
+        	value = 0     
+        }
+        sendCommand(SchubladeRechts1, value);
+end
+
+rule "SchubladeRechts2"	
+    when
+        Item s_SchubladeRechts2 received update        
+    then
+    	var Number value
+    	if(s_SchubladeRechts2.state == OPEN) {
+    		value = pwmHell      
+        } else {
+        	value = 0     
+        }
+        sendCommand(SchubladeRechts2, value);
+end
+
+rule "SchubladeRechts3"	
+    when
+        Item s_SchubladeRechts3 received update        
+    then
+    	var Number value
+    	if(s_SchubladeRechts3.state == OPEN) {
+    		value = pwmHell      
+        } else {
+        	value = 0     
+        }
+        sendCommand(SchubladeRechts3, value);
+end
+
+rule "SchubladeRechts4"	
+    when
+        Item s_SchubladeRechts4 received update        
+    then
+    	var Number value
+    	if(s_SchubladeRechts4.state == OPEN) {
+    		value = pwmHell      
+        } else {
+        	value = 0     
+        }
+        sendCommand(SchubladeRechts4, value);
+end

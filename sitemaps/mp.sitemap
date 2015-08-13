@@ -1,0 +1,173 @@
+sitemap default label="Main Menu"
+{	
+	Frame label="Init" {
+		Switch item=InitVars
+	}
+	Frame label="" {
+		Text label="Decke Steuerung" icon="light-off" {
+			Frame {
+				Switch item=NT
+				Switch item=decke_LEDNord mappings=[0="Aus",60="Mittel",fade_1000_0_100="Hell"]
+				Switch item=decke_LEDOst mappings=[0="Aus",60="Mittel",100="Hell"]
+				Switch item=decke_LEDSued mappings=[0="Aus",60="Mittel",100="Hell"]
+				Switch item=decke_LEDWest mappings=[0="Aus",60="Mittel",100="Hell"]
+			}
+//			Frame label="gpioRemoteControl Test" {			
+//				Switch item=decke_LEDNord_string mappings=[fade_1000_0_100="slowUp", blink_30_200_100_true_30="blink", ON="on"]
+//				Switch item=decke_LEDNord_string
+//				Slider item=decke_LEDNord_string sendFrequency=50
+//				Switch item=decke_LEDNord_string mappings=[0="OFF", 100="ON", 60="Fade"]
+//			}
+		}
+	}
+	Frame label=""{
+		Text label="Variablen" icon="settings"{
+			Frame label="Beleuchtungsautomatik" { 
+				Switch item=BeleuchtungAutomatik
+				Switch item=BeleuchtungHelligkeitAutomatik
+								
+				Text item=MaxHelligkeit label="Aktuelle MaxHelligkeit [%s]"
+				Setpoint item=NachtMaxHelligkeit label="MaxHelligkeit für Nacht [%s]" minValue=1 maxValue=100 step=5
+				Setpoint item=NachtBettMaxHelligkeit label="MaxHelligkeit für Bettbewegung [%s]" minValue=1 maxValue=100 step=1
+				Setpoint item=TagMaxHelligkeit label="MaxHelligkeit für Tag [%s]" minValue=1 maxValue=100 step=5
+				Setpoint item=NachtStartStunde label="NachtStartStunde (Abendstunde) [%s]" minValue=0 maxValue=23 step=1
+				Setpoint item=NachtEndStunde label="NachtEndStunde (Morgenstunde) [%s]" minValue=0 maxValue=23 step=1
+				Setpoint item=BeleuchtungAusTimerInMs label="Beleuchtung ausschalten Timer (in Millisekunden) [%s]" minValue=10000 maxValue=1000000 step=10000
+			}
+			Frame label="Beleuchtung" {					
+				Switch item=Beleuchtung
+				Setpoint item=MaxHelligkeit valuecolor=[<=20="NAVY",<=50="GRAY",>50="SILVER"] label="MaxHelligkeit [%s]" minValue=1 maxValue=100 step=10 
+			}			
+			Frame label="Anwesenheit" {
+				Switch item=Anwesend label="Anwesend [%s]"	
+				Text item=ImBett label="ImBett [%s]"					
+			}
+			Frame label="Helligkeit" {
+				Text item=IstHell label="IstHell [%s]"
+				Text item=IstHellInLetzterMinuteGeaendert label="IstHellInLetzterMinuteGeaendert: [%s]"	
+				Text item=LastUpdateOfIstHell label="LastUpdateOfIstHell: [%s]"			
+				Text item=s_Helligkeit_Vitrine label="Helligkeit Vitrine: [%s]"
+				Text item=s_Helligkeit_Zwischenwand label="Helligkeit Zwischenwand: [%s]"	
+			}
+		}
+	}
+	Frame label=""{		
+		Text label="Rollade" icon="settings"{
+			Frame {
+				Switch item=RolladeStatus label="Rollade" mappings=[0="Zu", 25="Ritzen", 37="Dunkel", 50="Halb", 80="Abgedunkelt", 100="oben"]
+			}
+			Frame label="MainPi PCF8574 Rollade Pins" { 
+				Switch item=RolladeStrom
+				Switch item=RolladeRichtung			
+			}
+		}
+	}
+	Frame label=""{		
+		Text label="Tisch Beleuchtung" icon="settings"{
+			Frame {
+				Slider item=UnterTischLedBlau sendFrequency=10 label="Blau [%s]" switchSupport
+				Slider item=UnterTischLedGruen sendFrequency=10 label="Gruen [%d]" switchSupport
+				Slider item=UnterTischLedRot sendFrequency=10 label="Rot [%d]" switchSupport
+			}
+		}
+	}
+	Frame label=""{
+		Text label="Inputs" icon="contact"{
+			Frame label="Schubladen" {                
+				Text item=s_SchubladeLinks1
+				Text item=s_SchubladeLinks2 
+				Text item=s_SchubladeLinks3 
+				Text item=s_SchubladeLinks4 
+				Text item=s_SchubladeLinks5 
+		
+				Text item=s_SchubladeRechts1
+				Text item=s_SchubladeRechts2
+				Text item=s_SchubladeRechts3
+				Text item=s_SchubladeRechts4
+			}
+			Frame label="Bewegungsmelder" { 
+				Text item=s_BewegungsmelderVitrine
+				Text item=s_BewegungsmelderZwischenwandLinks
+				Text item=s_BewegungsmelderZwischenwandRechts
+			}
+			Frame label="Tuer und Fenster" { 
+				Text item=s_Tuer
+				
+				Text item=s_FensterGrossAuf
+				Text item=s_FensterGrossKipp
+				
+				Text item=s_FensterKleinAuf				
+				Text item=s_FensterKleinKipp
+			}	
+			Frame label="Info" {                
+				Text item=pca9685controlBindingStatus label="Status of PCA9685: [%s]"	
+			}	
+		}
+	}	
+	Frame label=""{
+		Text label="Temperaturen" icon="temperature"{
+			Text item=s_decke_temperature_aussen label="Temperatur Decke: [%.1f]"
+			Text item=s_decke_temperature_lampe label="Temperatur Decke Lampe: [%.1f]"				
+			Text item=s_temperatur_vitrine label="Temperatur Vitrine: [%.1f]"	
+			Text item=s_temperatur_heizung label="Temperatur Heizung: [%.1f]"
+		}
+	}
+	Frame label=""{
+		Text label="Tests" icon="settings"{
+//			Frame label="MainPi PWMs" {                
+//				Switch item=PCAPin0 mappings=[0="Aus",50="Mittel",100="Hell"]
+//				Slider item=PCAPin0 sendFrequency=30 switchSupport 
+//				Switch item=PCAPin1
+//				Switch item=PCAPin2
+//				Switch item=PCAPin3
+//				Slider item=PCAPin4 sendFrequency=30 switchSupport 
+//				Switch item=PCAPin4
+//			}	
+			Frame label="Wetter Altheim"
+			{
+				Text item=Rheinbach_Temperatur valuecolor=[>30="red",>25="orange",>15="green",>5="orange",<=5="blue"]
+					{
+						Frame
+						{
+							Text item=Rheinbach_Temperatur valuecolor=[>30="red",>25="orange",>15="green",>5="orange",<=5="blue"]
+							Text item=Rheinbach_Luftfeuchtigkeit
+							Text item=Rheinbach_Luftdruck
+							Text item=Rheinbach_Bewoelkung
+							Text item=Rheinbach_Windgeschwindigkeit
+							Text item=Rheinbach_Windrichtung
+							Text item=Rheinbach_Letztes_Update
+						}
+						Frame
+						{
+							Switch item=Wettergrafik_Zeitraum label="Zeitraum" mappings=[0="Stunde", 1="Tag", 2="Woche"]
+							Chart item=Wettergrafik period=h refresh=6000 visibility=[Wettergrafik_Zeitraum==0, Wettergrafik_Zeitraum=="Uninitialized"]
+							Chart item=Wettergrafik period=D refresh=30000 visibility=[Wettergrafik_Zeitraum==1]
+							Chart item=Wettergrafik period=W refresh=30000 visibility=[Wettergrafik_Zeitraum==2]
+						}
+					}
+			}
+			Frame {
+				Switch item=PlaySound
+				Text item=MasterVolume label="MasterVolume [%d]"
+			}
+		}
+	}
+	Frame label="" {
+		Text label="Gruppen" icon="settings" {
+			Frame {
+				Group item=Deckenlicht	
+				Group item=SchubladenschrankRechts
+				Group item=SchubladenschrankLinks	
+				Group item=s_Bewegungsmelder
+				Group item=s_Helligkeit		
+				Group item=s_SchubladenschrankLinks
+				Group item=s_SchubladenschrankRechts
+				Group item=s_Fenster
+				Text  item=s_Tuer 
+				Group item=Rollade
+				Group item=s_Temperatur
+			}	
+		}
+	}
+	  
+}               
