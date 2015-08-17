@@ -2,9 +2,15 @@ import org.openhab.core.library.types.*
 
 rule "Init on startup"
 when
+//	System started or
 	Item InitVars changed to ON 
+//	Time cron "0/10 * * * * ?"	
 then	
-    logInfo("Init", "gestartet.") 
+	logInfo("Init", "gestartet.") 
+//	say("Rollade runter")
+//	postUpdate(RolladeStatus, 90)
+//	if(MaxHelligkeit.state == "Uninitialized"){
+//		logInfo("Init", "Alles Initialisiert, weil MaxHelligkeit Uninitialized")
 		BeleuchtungAutomatik.setState(ON)
 		BeleuchtungHelligkeitAutomatik.setState(ON)	
 		MaxHelligkeit.setState(new PercentType(100))
@@ -48,6 +54,6 @@ then
 		s_temperatur_heizung.setState(new DecimalType(0))
 		
 		RolladeStatus.setState(new DecimalType(100))
-
+//	}
 	
 end

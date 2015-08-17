@@ -1,0 +1,62 @@
+import org.openhab.core.library.types.*
+import org.openhab.model.script.actions.*
+import org.openhab.core.persistence.*
+import org.joda.time.*
+
+rule "Temperatur Automatik"
+when	 
+	Time cron "0/10 * * * * ?" 
+then
+	if(Rheinbach_Temperatur.state != "Uninitialized"){
+		var long innenTemperaturDurchschnitt = ((s_decke_temperature_aussen.state as DecimalType).longValue + (s_temperatur_vitrine.state as DecimalType).longValue) /2
+		var long aussenTemperatur = (Rheinbach_Temperatur.state as DecimalType).longValue
+		var long wunschTemperatur = (WunschTemperatur.state as DecimalType).longValue
+		var long wunschTemperaturToleranz = (WunschTemperaturToleranz.state as DecimalType).longValue
+			
+		var boolean istTemperaturAutomatikAn = TemperaturAutomatik.state == ON 
+		var boolean istDirekteSonne = DirekteSonne.state == ON
+		var boolean istRolladeOffen = (RolladeStatus.state as DecimalType).intValue >= 40 //Wenn weiter als 40% geöffnet
+		var boolean istTemperaturZuHoch = innenTemperaturDurchschnitt >= (wunschTemperatur + wunschTemperaturToleranz)
+		var boolean istTemperaturZuNiedrig = innenTemperaturDurchschnitt <= (wunschTemperatur - wunschTemperaturToleranz)
+		var boolean istWunschTemperatur = !istTemperaturZuHoch && !istTemperaturZuNiedrig
+		var boolean istAussenTemperaturHoeher = aussenTemperatur > innenTemperaturDurchschnitt
+		var boolean istEinFensterOffen = s_FensterGrossAuf.state == OPEN || s_FensterGrossKipp.state == OPEN || s_FensterKleinAuf.state == OPEN || s_FensterKleinKipp.state == OPEN
+//		var boolean RolladeWurdeBewegt = RolladeStatus.changedSince(now.minusMinutes(10))
+//	
+//		
+//		// TODO: Prüfe Werte auf Vorhandensein/Gültigkeit
+//		
+//		if(RolladeWurdeBewegt) {
+//			postUpdate(RolladeSeit10MinutenGeaendert, ON)
+////			logInfo("TemperaturAutomatik", "Rollade (angeblich) die letzte Minute nicht bewegt!")
+//		} else {
+//			postUpdate(RolladeSeit10MinutenGeaendert, OFF)
+////			logInfo("TemperaturAutomatik", "Rollade bewegt!")
+//		}
+		
+//		if(istTemperaturAutomatikAn && !istWunschTemperatur) {
+//			if(istTemperaturZuHoch){
+//				if(istDirekteSonne && istRolladeOffen && RolladeWurdeBewegt){
+//					postUpdate(RolladeStatus, 37) //Rollade runterfahren
+//				} 
+//				if(istAussenTemperaturHoeher && istEinFensterOffen) {
+//					//Fenster schließen				
+//				} else if(!istAussenTemperaturHoeher && !istEinFensterOffen) { //nicht wärmer draußen
+//					//Fenster öffnen				
+//				}
+//			} else { //Temperatur nicht zu hoch
+//				if(istTemperaturZuNiedrig) {
+//					if(istDirekteSonne && !istRolladeOffen) { // Klappt bislang nicht, weil direkte Sonne durch innenliegenden Sensor bestimmt wird!
+//						postUpdate(RolladeStatus, 100)
+//					}
+//					if(istAussenTemperaturHoeher && !istEinFensterOffen) {
+//						//Fenster öffnen
+//					} else if (!istAussenTemperaturHoeher && istEinFensterOffen) {
+//						//Fenster schließen
+//					}
+//				}
+//			}
+//		}
+	}
+end
+

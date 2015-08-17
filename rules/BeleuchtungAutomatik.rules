@@ -1,53 +1,90 @@
 import org.openhab.core.library.types.*
+import org.joda.time.*
 
-var boolean istBeleuchtungAn = true 
-var Number tempMaxHelligkeit = 100
-
-rule "BeleuchtungHandlerON"
+rule "Beleuchtung Automatik bei anwesenheit"
 when	 
-	Item Beleuchtung received command ON or
-	Item MaxHelligkeit received update
+	Item Anwesend changed to ON or
+	Item BeleuchtungAutomatik changed or
+	Item BeleuchtungHelligkeitAutomatik changed or
+	Item ImBett changed to OFF or
+	Item IstHell changed to ON or
+	Item NachtMaxHelligkeit changed or
+	Item TagMaxHelligkeit changed
 then
-//	logInfo("BeleuchtungHandler", "Beleuchtung Variable auf ON gesetzt")
-	var boolean maxHelligkeitGeaendert = (tempMaxHelligkeit != MaxHelligkeit.state)
+	var int nachtStartStunde = (NachtStartStunde.state as DecimalType).intValue
+	var int nachtEndStunde = (NachtEndStunde.state as DecimalType).intValue
+	var int nachtMaxHelligkeit = (NachtMaxHelligkeit.state as DecimalType).intValue
+	var int nachtBettMaxHelligkeit = (NachtBettMaxHelligkeit.state as DecimalType).intValue
+	var int tagMaxHelligkeit = (TagMaxHelligkeit.state as DecimalType).intValue
 	var int maxHelligkeit = (MaxHelligkeit.state as DecimalType).intValue
-	var String cmd
-	
-	if(istBeleuchtungAn) {
-		if(maxHelligkeitGeaendert) {
-			cmd = "fade_300_" + tempMaxHelligkeit + "_" + maxHelligkeit
+	 	
+	var boolean istNacht = (now.getHourOfDay() >= nachtStartStunde || now.getHourOfDay() < nachtEndStunde)
+	var boolean istAnwesend = (Anwesend.state == ON)
+	var boolean istBeleuchtungAutomatikAn = (BeleuchtungAutomatik.state == ON)
+	var boolean istHelligkeitsAutomatikAn = (BeleuchtungHelligkeitAutomatik.state == ON)
+	var boolean istHell = (IstHell.state == ON)
+	var boolean istBeleuchtungAn = (Beleuchtung.state == ON)	
+	var boolean istImBett = (ImBett.state == ON)
+
+	if(istBeleuchtungAutomatikAn && istAnwesend) {
+		if(istHelligkeitsAutomatikAn && istHell) {			
+			if(istBeleuchtungAn) {
+				sendCommand(Beleuchtung, OFF)
+			}			
+		} else { //Keine Helligkeitskontrolle oder es ist dunkel
+			if(istNacht) {
+				if(istImBett) {
+					postUpdate(MaxHelligkeit, nachtBettMaxHelligkeit) //Helligkeit auf Bett anpassen
+				} else {
+					postUpdate(MaxHelligkeit, nachtMaxHelligkeit) //Helligkeit auf Nacht anpassen
+				}
+				postUpdate(Beleuchtung, ON)
+				
+			} else { //Tag
+				postUpdate(MaxHelligkeit, tagMaxHelligkeit) //Helligkeit auf Tag anpassen				
+				postUpdate(Beleuchtung, ON)				
+			}
 		}
-	} else {
-		cmd = "fade_300_0_" + maxHelligkeit
-		istBeleuchtungAn = true
 	}
-	
-	sendCommand(NT, ON)
-	sendCommand(decke_LEDSued, cmd)
-	sendCommand(decke_LEDOst, cmd)	
-	sendCommand(decke_LEDWest, cmd)	
-	sendCommand(decke_LEDNord, cmd)	
-	
-	tempMaxHelligkeit = maxHelligkeit //speichere HelligkeitsWert
 end
-
-rule "BeleuchtungHandlerOFF"
+	
+rule "NichtAnwesend"
 when	 
-	Item Beleuchtung received command OFF
-then
-	var int maxHelligkeit = (MaxHelligkeit.state as DecimalType).intValue
-	var String cmd
-	logInfo("BeleuchtungHandler", "Beleuchtung Variable auf OFF gesetzt")
-	if(istBeleuchtungAn) {
-		cmd = "fade_2000_" + maxHelligkeit + "_0" 
-		istBeleuchtungAn = false
-	}    
-
-	sendCommand(decke_LEDSued, cmd)
-	sendCommand(decke_LEDOst, cmd)	
-	sendCommand(decke_LEDWest, cmd)	
-	sendCommand(decke_LEDNord, cmd)	
+	Item Anwesend changed to OFF
+then	
+	logInfo("Anwesenheit", "Anwesenheit OFF: Beleuchtung ON und NT OFF")
+	sendCommand(Beleuchtung, OFF)	
+	//sendCommand(NT, OFF)
 end
+
+
+
+
+
+
+	
+//	if(BeleuchtungAutomatik.state == ON){
+//		if(BeleuchtungHelligkeitAutomatik.state == ON && IstHell.state == ON){
+//			sendCommand(Beleuchtung, OFF) //HelligkeitAutomatik ist an und ist hell, Beleuchtung ausschalten
+//		} if(BeleuchtungHelligkeitAutomatik.state == ON && IstHell.state == OFF){
+//			if(Beleuchtung.state == OFF){ //Wenn Beleuchtung noch aus ist
+//				sendCommand(Beleuchtung, ON)
+//			}
+//		} else { //HelligkeitAutomatik OFF
+//			
+//		}
+//	}
+//	
+//	if(istSchlafenszeit && ImBett.state == ON) {
+//		logInfo("Anwesenheit", "MaxHelligkeit auf 20 geändert und Beleuchtung ON")
+////		MaxHelligkeit.setState(new PercentType(20))
+//		sendCommand(MaxHelligkeit, nachtMaxHelligkeit)
+//	} else {
+//		logInfo("Anwesenheit", "MaxHelligkeit auf 100 geändert und Beleuchtung ON")
+////		MaxHelligkeit.setState(new PercentType(100))
+//		sendCommand(MaxHelligkeit, nachtMaxHelligkeit)
+//	}
+//	sendCommand(Beleuchtung, ON)
 
 
 

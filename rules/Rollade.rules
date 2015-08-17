@@ -1,8 +1,10 @@
 import org.openhab.core.library.types.*
+import org.openhab.model.script.actions.*
 
 var Number oldState = 50
 var Number currState = 50
 var boolean hoch = false
+var Timer timer = null
 
 rule "Rollade Steuerung"
 when
@@ -12,28 +14,27 @@ then
 	currState = RolladeStatus.state as DecimalType
 	var Number diff = 0
 	if(oldState > currState){ // Runter
-		diff = (oldState - currState) * 0.27
-		hoch = false
+		diff = (oldState - currState) * 0.25
+		sendCommand(RolladeRichtung, OFF) //Richtungsrelai OFF ist runter
 	} else { // Hoch
-		diff = (currState - oldState) * 0.27
-		hoch = true
+		diff = (currState - oldState) * 0.28 //gebe hoch etwas mehr Zeit
+		sendCommand(RolladeRichtung, ON)
 	}	
 	
 	if(currState == 100 || currState == 0) { //Wenn Ziel ganz oben oder unten, immer 30 Sekunden um Ziel definiv zu erreichen (Kalibrierung)
-		logInfo("Rollade", "Ganz hoch oder runter, Kalibrierfahrt")
+		logInfo("Rollade", "Fahre ganz hoch oder runter, Kalibrierfahrt")
 		diff = 30
-	}
+	}	
 	
-	if(hoch){
-		sendCommand(RolladeRichtung, ON)		
-		diff = diff * 1.2 //Gebe etwas mehr Zeit um hoch zu gehen
-	}
-	else {
-		sendCommand(RolladeRichtung, OFF)		
-	} 
 	sendCommand(RolladeStrom, ON)
 	
-	createTimer(now.plusSeconds(diff.intValue))[|
+	if(timer!=null) { //Falls timer aktiv, löschen
+        timer.cancel
+        timer = null
+    }
+    
+	val difff = diff.intValue 
+	timer = createTimer(now.plusSeconds(diff.intValue))[| //Überschreibe alten Timer		
 		sendCommand(RolladeStrom, OFF)
 		sendCommand(RolladeRichtung, OFF)
 	]

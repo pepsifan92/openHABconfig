@@ -1,0 +1,13 @@
+import org.joda.*
+import org.openhab.core.library.types.*
+
+rule "Sound testweise Abspielen"
+when
+	Item PlaySound changed
+then
+  if(PlaySound.state == ON){
+    playSound("5e_oringz-pack-nine-11.mp3")
+  } else {
+    playSound("sprache/neinMiez.mp3")		
+  }
+end

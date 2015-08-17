@@ -1,10 +1,10 @@
 /* Wetter */
 Group Wettergrafik
-Number Rheinbach_Temperatur "Temperatur [%.1f °C]" <temperature> (Wettergrafik) {weather="locationId=zuhause, type=temperature, property=current"}
-Number Rheinbach_Luftfeuchtigkeit "Luftfeuchtigkeit [%d %%]" <water> {weather="locationId=zuhause, type=atmosphere, property=humidity"}
-Number Rheinbach_Luftdruck "Luftdruck [%.0f mb]" {weather="locationId=zuhause, type=atmosphere, property=pressure"}
-Number Rheinbach_Bewoelkung "Bewölkung [%.0f %%]" <sun_clouds> {weather="locationId=zuhause, type=clouds, property=percent"}
-DateTime Rheinbach_Letztes_Update "Letztes Update [%1$td.%1$tm.%1$tY %1$tH:%1$tM]" <clock> {weather="locationId=zuhause, type=condition, property=lastUpdate"}
-Number Rheinbach_Windgeschwindigkeit "Windgeschwindigkeit [%.0f km/h]" <wind> {weather="locationId=zuhause, type=wind, property=speed"}
-String Rheinbach_Windrichtung "Windrichtung [%s]" <wind> {weather="locationId=zuhause, type=wind, property=direction"}
+Number Rheinbach_Temperatur "Temperatur [%.1f °C]" <temperature> (Wettergrafik, Weather) {weather="locationId=zuhause, type=temperature, property=current"}
+Number Rheinbach_Luftfeuchtigkeit "Luftfeuchtigkeit [%d %%]" <water> (Weather) {weather="locationId=zuhause, type=atmosphere, property=humidity"}
+Number Rheinbach_Luftdruck "Luftdruck [%.0f mb]" (Weather) {weather="locationId=zuhause, type=atmosphere, property=pressure"}
+Number Rheinbach_Bewoelkung "Bewölkung [%.0f %%]" <sun_clouds> (Weather) {weather="locationId=zuhause, type=clouds, property=percent"}
+DateTime Rheinbach_Letztes_Update "Letztes Update [%1$td.%1$tm.%1$tY %1$tH:%1$tM]" <clock> (Weather) {weather="locationId=zuhause, type=condition, property=lastUpdate"}
+Number Rheinbach_Windgeschwindigkeit "Windgeschwindigkeit [%.0f km/h]" <wind> (Weather) {weather="locationId=zuhause, type=wind, property=speed"}
+String Rheinbach_Windrichtung "Windrichtung [%s]" <wind> (Weather) {weather="locationId=zuhause, type=wind, property=direction"}
 Number Wettergrafik_Zeitraum "Temperatur - Zeitraum"

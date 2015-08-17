@@ -12,6 +12,9 @@ Group s_SchubladenschrankRechts
 Group s_Fenster
 Group s_Temperatur
 
+Group Temperature
+Group Weather
+
 
 /* DECKE LICHT */
 Switch NT (Deckenlicht) { gpioremotecontrol="123.123.123.31:1234;4;out"} 
@@ -52,7 +55,7 @@ Dimmer SchubladeLinks5 (SchubladenschrankLinks) { pca9685control="64;12"}
 /* Rollade */
 Switch RolladeStrom (Rollade) { pcf8574control="32;6;out"}
 Switch RolladeRichtung (Rollade) { pcf8574control="32;7;out"}
-Number RolladeStatus (Rollade)
+Number RolladeStatus (Rollade) 
 
 
 /* Infos */

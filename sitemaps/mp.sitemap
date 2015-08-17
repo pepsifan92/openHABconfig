@@ -29,6 +29,9 @@ sitemap default label="Main Menu"
 				Text item=MaxHelligkeit label="Aktuelle MaxHelligkeit [%s]"
 				Setpoint item=NachtMaxHelligkeit label="MaxHelligkeit für Nacht [%s]" minValue=1 maxValue=100 step=5
 				Setpoint item=NachtBettMaxHelligkeit label="MaxHelligkeit für Bettbewegung [%s]" minValue=1 maxValue=100 step=1
+				Selection item=NachtBettMaxHelligkeit label="MaxHelligkeit für Bettbewegung" mappings=[1="1",2="2",3="3",4="4",5="5",6="6",7="7",8="8",9="9",10="10",11="11",12="12",13="13",14="14",15="15",16="16",17="17",18="18",19="19",20="20"]
+				
+				
 				Setpoint item=TagMaxHelligkeit label="MaxHelligkeit für Tag [%s]" minValue=1 maxValue=100 step=5
 				Setpoint item=NachtStartStunde label="NachtStartStunde (Abendstunde) [%s]" minValue=0 maxValue=23 step=1
 				Setpoint item=NachtEndStunde label="NachtEndStunde (Morgenstunde) [%s]" minValue=0 maxValue=23 step=1
@@ -40,21 +43,33 @@ sitemap default label="Main Menu"
 			}			
 			Frame label="Anwesenheit" {
 				Switch item=Anwesend label="Anwesend [%s]"	
-				Text item=ImBett label="ImBett [%s]"					
+				Text item=ImBett label="ImBett [%s]"
 			}
 			Frame label="Helligkeit" {
 				Text item=IstHell label="IstHell [%s]"
+				Text item=DirekteSonne label="DirekteSonne [%s]"
 				Text item=IstHellInLetzterMinuteGeaendert label="IstHellInLetzterMinuteGeaendert: [%s]"	
+				Text item=HelligkeitVitrineVorEinerMinute label="HelligkeitVitrineVorEinerMinute: [%s]"
 				Text item=LastUpdateOfIstHell label="LastUpdateOfIstHell: [%s]"			
 				Text item=s_Helligkeit_Vitrine label="Helligkeit Vitrine: [%s]"
 				Text item=s_Helligkeit_Zwischenwand label="Helligkeit Zwischenwand: [%s]"	
+			}
+			
+		}
+	}
+	Frame label=""{		
+		Text label="Temperatur Automatik" icon="settings"{
+			Frame label="Temperatur Automatik" {
+				Switch item=TemperaturAutomatik
+				Selection item=WunschTemperatur label="Wunsch Temperatur" mappings=[16="16",17="17",18="18",19="19",20="20",21="21",22="22",23="23",24="24"]
+				Text item=RolladeSeit10MinutenGeaendert label="RolladeStatus hat sich seit 10 Minuten geaendert [%s]"
 			}
 		}
 	}
 	Frame label=""{		
 		Text label="Rollade" icon="settings"{
 			Frame {
-				Switch item=RolladeStatus label="Rollade" mappings=[0="Zu", 25="Ritzen", 37="Dunkel", 50="Halb", 80="Abgedunkelt", 100="oben"]
+				Switch item=RolladeStatus label="Rollade [%s]" mappings=[0="Zu", 25="Ritzen", 37="Dunkel", 50="Halb", 80="Abgedunkelt", 100="oben"]
 			}
 			Frame label="MainPi PCF8574 Rollade Pins" { 
 				Switch item=RolladeStrom
@@ -106,24 +121,13 @@ sitemap default label="Main Menu"
 	}	
 	Frame label=""{
 		Text label="Temperaturen" icon="temperature"{
-			Text item=s_decke_temperature_aussen label="Temperatur Decke: [%.1f]"
-			Text item=s_decke_temperature_lampe label="Temperatur Decke Lampe: [%.1f]"				
-			Text item=s_temperatur_vitrine label="Temperatur Vitrine: [%.1f]"	
-			Text item=s_temperatur_heizung label="Temperatur Heizung: [%.1f]"
-		}
-	}
-	Frame label=""{
-		Text label="Tests" icon="settings"{
-//			Frame label="MainPi PWMs" {                
-//				Switch item=PCAPin0 mappings=[0="Aus",50="Mittel",100="Hell"]
-//				Slider item=PCAPin0 sendFrequency=30 switchSupport 
-//				Switch item=PCAPin1
-//				Switch item=PCAPin2
-//				Switch item=PCAPin3
-//				Slider item=PCAPin4 sendFrequency=30 switchSupport 
-//				Switch item=PCAPin4
-//			}	
-			Frame label="Wetter Altheim"
+			Frame label="Lokale InnenTemperaturen"{
+				Text item=s_decke_temperature_aussen label="Temperatur Decke: [%.1f]"
+				Text item=s_decke_temperature_lampe label="Temperatur Decke Lampe: [%.1f]"				
+				Text item=s_temperatur_vitrine label="Temperatur Vitrine: [%.1f]"	
+				Text item=s_temperatur_heizung label="Temperatur Heizung: [%.1f]"
+			}
+			Frame label="Wetter Rheinbach"
 			{
 				Text item=Rheinbach_Temperatur valuecolor=[>30="red",>25="orange",>15="green",>5="orange",<=5="blue"]
 					{
@@ -146,9 +150,22 @@ sitemap default label="Main Menu"
 						}
 					}
 			}
+		}				
+	}
+	Frame label=""{
+		Text label="Tests" icon="settings"{
+//			Frame label="MainPi PWMs" {                
+//				Switch item=PCAPin0 mappings=[0="Aus",50="Mittel",100="Hell"]
+//				Slider item=PCAPin0 sendFrequency=30 switchSupport 
+//				Switch item=PCAPin1
+//				Switch item=PCAPin2
+//				Switch item=PCAPin3
+//				Slider item=PCAPin4 sendFrequency=30 switchSupport 
+//				Switch item=PCAPin4
+//			}	
+			
 			Frame {
-				Switch item=PlaySound
-				Text item=MasterVolume label="MasterVolume [%d]"
+				Switch item=PlaySound				
 			}
 		}
 	}

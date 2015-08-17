@@ -1,15 +1,19 @@
 /* Init */
 Switch InitVars
+Switch InitVarsTEST
 
 
 /* Beleuchtung */
+Switch Beleuchtung
 Switch BeleuchtungAutomatik
 Switch BeleuchtungHelligkeitAutomatik
 Number MaxHelligkeit 
 Number BeleuchtungAusTimerInMs
+Number HelligkeitSchwellwertVitrineDirekteSonne
 Number HelligkeitSchwellwertVitrine
 Number HelligkeitSchwellwertZwischenwand
 Number HelligkeitToleranz 
+
 
 Number TagMaxHelligkeit
 Number NachtMaxHelligkeit
@@ -17,18 +21,22 @@ Number NachtBettMaxHelligkeit
 Number NachtStartStunde <settings>
 Number NachtEndStunde <settings>
 
-Switch Anwesend
-Switch DirekteSonne
 Switch IstHell
-Switch ImBett
+Switch DirekteSonne
 
+/* Anwesenheit */
+Switch Anwesend
+Switch ImBett 
 
+/* Temperatur */
+Switch TemperaturAutomatik
+Number WunschTemperatur
+Number WunschTemperaturToleranz
+Switch RolladeSeit10MinutenGeaendert
 
-
-Switch Beleuchtung
 
 Switch IstHellInLetzterMinuteGeaendert
+Number HelligkeitVitrineVorEinerMinute
 String LastUpdateOfIstHell <settings>
 
 Switch PlaySound
-Number MasterVolume

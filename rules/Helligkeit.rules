@@ -8,17 +8,24 @@ when
 	Time cron "0/10 * * * * ?" 
 then
 	val int schwellwertVitrine = (HelligkeitSchwellwertVitrine.state as DecimalType).intValue()
+	val int schwellwertVitrineDirekteSonne = (HelligkeitSchwellwertVitrineDirekteSonne.state as DecimalType).intValue()
 	val int schwellwertZwischenwand = (HelligkeitSchwellwertZwischenwand.state as DecimalType).intValue
 	val int toleranz = (HelligkeitToleranz.state as DecimalType).intValue
 	
 	var boolean vitrineOderZwischenwandHelligkeitDunkel = (s_Helligkeit_Vitrine.state > schwellwertVitrine) || (s_Helligkeit_Zwischenwand.state > schwellwertZwischenwand)
 	var boolean vitrineOderZwischenwandHelligkeitHell = (s_Helligkeit_Vitrine.state < schwellwertVitrine-toleranz) || (s_Helligkeit_Zwischenwand.state < schwellwertZwischenwand-toleranz)
+	var boolean vitrineDirekteSonne = (s_Helligkeit_Vitrine.state < schwellwertVitrineDirekteSonne-toleranz)
 	
 	if(vitrineOderZwischenwandHelligkeitDunkel){
 		IstHell.state = OFF;
 	}
 	if(vitrineOderZwischenwandHelligkeitHell){
 		IstHell.state = ON;
+	}
+	if(vitrineDirekteSonne){
+		DirekteSonne.state = ON
+	} else {
+		DirekteSonne.state = OFF
 	}
 	
 //	if(IstHell.changedSince(now.minusMinutes(1))){
